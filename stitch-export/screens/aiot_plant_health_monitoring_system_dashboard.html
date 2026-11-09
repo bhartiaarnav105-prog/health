@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FloraTech AIoT - Autonomous Plant Health &amp; Precision Irrigation System</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-fixed": "#acedff",
+            "on-error-container": "#ffdad6",
+            "secondary-fixed": "#ffdad7",
+            "outline": "#86948a",
+            "on-tertiary-fixed": "#001f26",
+            "surface-dim": "#111416",
+            "primary-fixed-dim": "#4edea3",
+            "primary-container": "#10b981",
+            "tertiary-fixed-dim": "#4cd7f6",
+            "secondary-fixed-dim": "#ffb3ad",
+            "surface-container-lowest": "#0c0f11",
+            "tertiary": "#4cd7f6",
+            "on-secondary-fixed-variant": "#930013",
+            "on-background": "#e1e2e5",
+            "on-error": "#690005",
+            "surface-variant": "#323537",
+            "inverse-surface": "#e1e2e5",
+            "on-primary-fixed-variant": "#005236",
+            "surface-bright": "#37393c",
+            "on-tertiary": "#003640",
+            "surface-container": "#1d2022",
+            "surface-container-low": "#191c1e",
+            "on-primary-fixed": "#002113",
+            "primary-fixed": "#6ffbbe",
+            "secondary-container": "#a40217",
+            "tertiary-container": "#00b2d0",
+            "secondary": "#ffb3ad",
+            "on-secondary-container": "#ffaea8",
+            "on-primary": "#003824",
+            "error": "#ffb4ab",
+            "surface-container-high": "#272a2d",
+            "surface-container-highest": "#323537",
+            "on-tertiary-container": "#003f4b",
+            "inverse-primary": "#006c49",
+            "on-surface-variant": "#bbcabf",
+            "on-surface": "#e1e2e5",
+            "surface-tint": "#4edea3",
+            "inverse-on-surface": "#2e3133",
+            "on-secondary-fixed": "#410004",
+            "on-primary-container": "#00422b",
+            "background": "#111416",
+            "surface": "#111416",
+            "primary": "#4edea3",
+            "error-container": "#93000a",
+            "on-secondary": "#68000a",
+            "outline-variant": "#3c4a42",
+            "on-tertiary-fixed-variant": "#004e5c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "margin-tablet": "1.5rem",
+            "space-xl": "2.5rem",
+            "margin-desktop": "2.5rem",
+            "margin": "1rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "telemetry-display": ["JetBrains Mono"],
+            "label-md": ["JetBrains Mono"],
+            "label-sm": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Space Grotesk"],
+            "headline-lg-mobile": ["Space Grotesk"],
+            "headline-xl": ["Space Grotesk"],
+            "body-lg": ["Inter"],
+            "telemetry-value": ["JetBrains Mono"],
+            "headline-xl-mobile": ["Space Grotesk"],
+            "body-sm": ["Inter"],
+            "headline-md": ["Space Grotesk"],
+            "headline-sm": ["Space Grotesk"]
+          },
+          "fontSize": {
+            "telemetry-display": ["32px", { "lineHeight": "36px", "fontWeight": "500" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-lg": ["36px", { "lineHeight": "44px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "600" }],
+            "headline-xl": ["48px", { "lineHeight": "56px", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "telemetry-value": ["20px", { "lineHeight": "26px", "fontWeight": "500" }],
+            "headline-xl-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .cyber-grid {
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(60, 74, 66, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(60, 74, 66, 0.12) 1px, transparent 1px);
+    }
+    @keyframes pulse-emerald {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.15); }
+    }
+    @keyframes scan-line {
+      0% { top: 0%; opacity: 0.8; }
+      50% { opacity: 0.3; }
+      100% { top: 100%; opacity: 0.8; }
+    }
+    .scanner-active {
+      position: relative;
+      overflow: hidden;
+    }
+    .scanner-active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #ffb4ab;
+      box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444;
+      animation: scan-line 2.5s ease-in-out infinite;
+    }
+    .glow-emerald {
+      box-shadow: 0 0 16px -2px rgba(16, 185, 129, 0.25);
+    }
+    .glow-crimson {
+      box-shadow: 0 0 20px -2px rgba(239, 68, 68, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- LEFT NAVIGATION SIDEBAR (Shared Component: SideNavBar) -->
+<aside class="fixed top-0 left-0 h-screen w-64 border-r border-outline-variant bg-surface-container-low z-40 hidden md:block">
+<div class="flex flex-col justify-between h-full p-space-md border-r border-outline-variant">
+<!-- Brand & Header -->
+<div class="space-y-space-md">
+<div class="flex items-center gap-space-sm px-space-xs">
+<div class="w-9 h-9 rounded-lg bg-surface-container-highest border border-primary flex items-center justify-center text-primary shadow-[0_0_12px_rgba(78,222,163,0.3)]">
+<span class="material-symbols-outlined text-[20px]" data-icon="biotech">biotech</span>
+</div>
+<div>
+<div class="text-headline-sm font-headline-sm font-semibold tracking-wider text-primary">FloraTech AIoT</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping inline-block"></span>
+              SYS_ONLINE [v4.2.8]
+            </div>
+</div>
+</div>
+<!-- Node Hardware Capsule -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant text-label-sm font-label-sm space-y-1">
+<div class="flex items-center justify-between text-primary">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="memory">memory</span>
+              ESP32-S3 Node 01
+            </span>
+<span class="px-1 py-0.5 rounded bg-surface-container-high text-primary border border-outline-variant text-[9px]">ONLINE</span>
+</div>
+<div class="grid grid-cols-2 gap-1 pt-1 text-on-surface-variant text-[10px]">
+<div>RSSI: <span class="text-on-surface font-telemetry-value text-[11px]">-58 dBm</span></div>
+<div>CORE: <span class="text-on-surface font-telemetry-value text-[11px]">3.3V REG</span></div>
+<div class="col-span-2">IP: <span class="text-on-surface font-telemetry-value text-[11px]">192.168.1.142</span></div>
+</div>
+</div>
+<!-- Primary Navigation Links -->
+<nav class="space-y-1 pt-2">
+<!-- Item 1: Dashboard (ACTIVE MATCH) -->
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg bg-surface-container-high text-primary border-l-2 border-primary font-medium cursor-pointer transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</a>
+<!-- Item 2: Disease Detection -->
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant font-normal transition-colors cursor-pointer duration-150 ease-in-out" href="#disease-station">
+<span class="material-symbols-outlined text-[20px]" data-icon="biotech">biotech</span>
+<span class="text-label-md font-label-md">Disease Detection</span>
+</a>
+<!-- Item 3: Soil Telemetry -->
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant font-normal transition-colors cursor-pointer duration-150 ease-in-out" href="#soil-telemetry">
+<span class="material-symbols-outlined text-[20px]" data-icon="potted_plant">potted_plant</span>
+<span class="text-label-md font-label-md">Soil Telemetry</span>
+</a>
+<!-- Item 4: Prediction History -->
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant font-normal transition-colors cursor-pointer duration-150 ease-in-out" href="#history-log">
+<span class="material-symbols-outlined text-[20px]" data-icon="history">history</span>
+<span class="text-label-md font-label-md">Prediction History</span>
+</a>
+<!-- Item 5: System Settings -->
+<a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant font-normal transition-colors cursor-pointer duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="text-label-md font-label-md">System Settings</span>
+</a>
+</nav>
+</div>
+<!-- Footer & Diagnostics Section -->
+<div class="space-y-space-sm pt-space-md border-t border-outline-variant">
+<a class="flex items-center gap-space-sm px-space-md py-space-xs rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant text-label-md font-label-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="memory">memory</span>
+          Diagnostics
+        </a>
+<a class="flex items-center gap-space-sm px-space-md py-space-xs rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-variant text-label-md font-label-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help_outline">help_outline</span>
+          Help
+        </a>
+<!-- Bio-Ops Engineer Card -->
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant flex items-center gap-3 mt-2">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 border border-primary/50 flex items-center justify-center text-primary text-label-md font-semibold">
+            AG
+          </div>
+<div class="overflow-hidden">
+<div class="text-body-sm font-medium text-on-surface truncate">Bio-Ops Engineer</div>
+<div class="text-label-sm font-label-sm text-outline truncate">Greenhouse Hub A</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN VIEWPORT CONTAINER -->
+<div class="flex-1 md:ml-64 flex flex-col min-w-0 bg-background cyber-grid">
+<!-- TOP NAVIGATION BAR (Shared Component: TopNavBar) -->
+<header class="sticky top-0 z-30 flex justify-between items-center w-full px-space-lg h-16 border-b border-outline-variant bg-surface-container-lowest backdrop-blur-md bg-opacity-95">
+<div class="flex items-center gap-space-md">
+<!-- Mobile Drawer Toggle -->
+<button aria-label="Toggle navigation" class="md:hidden text-on-surface p-1 rounded hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div>
+<h1 class="text-headline-md font-headline-md font-semibold text-on-surface tracking-tight flex items-center gap-2">
+            FloraTech Biosensing Operations
+          </h1>
+<p class="text-label-sm font-label-sm text-outline hidden sm:block">Edge-AI Autonomous Crop Vitality &amp; Precision Micro-Irrigation</p>
+</div>
+</div>
+<!-- Center Telemetry Links -->
+<div class="hidden lg:flex items-center gap-6">
+<a class="text-primary border-b-2 border-primary pb-1 font-semibold text-label-md font-label-md" href="#">Cluster A</a>
+<a class="text-on-surface-variant hover:text-on-surface pb-1 text-label-md font-label-md transition-colors" href="#">Greenhouse Hub</a>
+<a class="text-on-surface-variant hover:text-on-surface pb-1 text-label-md font-label-md transition-colors" href="#">Canopy Map</a>
+</div>
+<!-- Trailing Status HUD & Interactive Mode Switch -->
+<div class="flex items-center gap-space-md">
+<!-- ESP32 Online Pulse Beacon -->
+<div class="hidden sm:flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container border border-outline-variant text-label-sm font-label-sm text-primary">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span>PING: 24ms</span>
+<span class="text-outline">|</span>
+<span class="text-on-surface-variant">Synced 2s ago</span>
+</div>
+<!-- Segmented Mode Actuator -->
+<div class="flex items-center p-1 rounded-lg bg-surface-container-high border border-outline-variant">
+<button class="px-space-sm py-1 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.4)]">
+<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+            LIVE MODE
+          </button>
+<button class="px-space-sm py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors">
+            SIMULATOR
+          </button>
+</div>
+<!-- Trailing Utility Actions -->
+<div class="hidden md:flex items-center gap-1 text-on-surface-variant">
+<button class="p-2 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Mesh WiFi Strength">
+<span class="material-symbols-outlined text-[20px]" data-icon="wifi">wifi</span>
+</button>
+<button class="p-2 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Inspection Schedule">
+<span class="material-symbols-outlined text-[20px]" data-icon="schedule">schedule</span>
+</button>
+<button class="p-2 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Calibration Fine-Tuning">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN SCROLLABLE DASHBOARD CANVAS -->
+<main class="p-4 md:p-space-lg space-y-space-lg max-w-[1680px] w-full mx-auto">
+<!-- SIMULATION BENCHMARK / DEMO DRAWER BANNER -->
+<div class="w-full bg-surface-container-low border border-outline-variant rounded-xl p-space-sm px-space-md flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="px-2 py-0.5 rounded bg-tertiary/10 border border-tertiary/40 text-tertiary font-label-sm text-[10px] tracking-widest font-bold">
+            BENCHMARK
+          </div>
+<span class="text-body-sm font-medium text-on-surface">DEMO DATA ISOLATION ACTIVE - HARDWARE NOT OVERRIDDEN</span>
+<span class="text-label-sm font-label-sm text-outline hidden lg:inline">Select edge anomaly simulation profiles to evaluate detection pipelines:</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-space-sm py-1 rounded bg-surface-container border border-outline-variant hover:border-primary text-label-sm font-label-sm text-on-surface transition-colors">
+            [Tomato Nominal]
+          </button>
+<button class="px-space-sm py-1 rounded bg-secondary-container/30 border border-error text-secondary font-label-sm text-label-sm transition-colors shadow-[0_0_8px_rgba(239,68,68,0.2)]">
+            [Early Blight Inject]
+          </button>
+<button class="px-space-sm py-1 rounded bg-surface-container border border-outline-variant hover:border-error text-label-sm font-label-sm text-on-surface transition-colors">
+            [Drought Desiccation]
+          </button>
+</div>
+</div>
+<!-- QUICK HUD TELEMETRY METRIC STRIP -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- CARD 1: Pathogen Risk Alert -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-error-container glow-crimson flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+              Pathology Alert
+            </span>
+<span class="text-label-sm font-label-sm text-outline">[CAM_NODE.01]</span>
+</div>
+<div class="my-2">
+<div class="text-telemetry-display font-telemetry-display text-secondary tracking-tight">Early Blight</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between mt-1">
+<span>Pathogen: Alternaria solani</span>
+<span class="text-secondary font-label-md font-semibold">94.8% CONF</span>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="warning">warning</span> Stage 2 Foliar Lesions
+            </span>
+<span class="text-outline">Latency: 142ms</span>
+</div>
+</div>
+<!-- CARD 2: Soil Hydration Metric -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-primary/40 glow-emerald flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-wider flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+              Volumetric Moisture
+            </span>
+<span class="text-label-sm font-label-sm text-outline">[ADC1_CH4]</span>
+</div>
+<div class="my-2 flex items-baseline justify-between">
+<div class="text-telemetry-display font-telemetry-display text-primary">64.2<span class="text-headline-sm font-headline-sm text-on-surface-variant">%</span></div>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 border border-primary/40 text-primary font-label-sm text-label-sm font-bold">
+              OPTIMAL HYDRATION
+            </span>
+</div>
+<div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Target: 55% - 75%</span>
+<span class="text-primary font-telemetry-value text-[12px]">Δ +1.4% / 3h</span>
+</div>
+</div>
+<!-- CARD 3: Raw ADC Sensor Suite -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Capacitive Sensor</span>
+<span class="text-label-sm font-label-sm text-outline">[12-BIT CALIB]</span>
+</div>
+<div class="my-2 flex items-baseline justify-between">
+<div class="text-telemetry-display font-telemetry-display text-on-surface">2,380 <span class="text-body-sm text-outline">ADC</span></div>
+<span class="text-label-sm font-label-sm text-outline">Range: 0-4095</span>
+</div>
+<div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>Bus: I2C &amp; ADC1 Active</span>
+<span class="text-primary font-telemetry-value text-[12px]">1.0 Hz Stream</span>
+</div>
+</div>
+<!-- CARD 4: Irrigation Actuator State -->
+<div class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Actuator Relay</span>
+<span class="text-label-sm font-label-sm text-outline">[GPIO_21]</span>
+</div>
+<div class="my-2 flex items-center justify-between">
+<div>
+<div class="text-headline-sm font-headline-sm font-bold text-on-surface">PUMP STANDBY</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">Flow: 0.0 L/min</div>
+</div>
+<button class="px-space-sm py-1.5 rounded bg-surface-container-high hover:bg-surface-variant border border-outline-variant text-label-sm font-label-sm text-primary transition-colors">
+              PULSE 5s
+            </button>
+</div>
+<div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>Threshold: &lt; 28%</span>
+<span class="text-outline">Last run: 08:14 AM</span>
+</div>
+</div>
+</div>
+<!-- WORKSTATION BENTO SECTION: DISEASE DETECTION WORKSTATION & SPIDER RADAR CHART -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg" id="disease-station">
+<!-- Interactive Leaf Inspection & AI Diagnostics (8 Cols) -->
+<div class="lg:col-span-8 p-space-lg rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant flex flex-col justify-between">
+<div>
+<div class="flex flex-wrap items-center justify-between pb-space-md border-b border-outline-variant gap-2">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="biotech">biotech</span>
+                  Plant Disease Detection Workstation
+                </h2>
+<p class="text-body-sm text-on-surface-variant">High-Resolution Multi-Spectral Edge Leaf Pathology Classifier</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-label-sm font-label-sm text-primary">
+                  MobileNetV3-PlantEdge v2.1
+                </span>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-label-sm font-label-sm text-on-surface-variant">
+                  FP16 Quantized
+                </span>
+</div>
+</div>
+<!-- Scanner Workstation Area -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md mt-space-md">
+<!-- Left: Image Preview & Target Bounding Box (7 cols) -->
+<div class="md:col-span-7 space-y-space-sm">
+<div class="relative w-full h-72 rounded-lg border border-outline-variant bg-surface-container-lowest overflow-hidden scanner-active flex items-center justify-center">
+<!-- Leaf Sample Image -->
+<img class="w-full h-full object-cover opacity-85" data-alt="Close up macroscopic high resolution photograph of a greenhouse tomato leaf exhibiting dark circular concentric lesions of early blight pathology on leaf tissue, illuminated by clinical biological testing LED lights with sharp chlorophyll details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAE2SZ5THDuwJKRpo42oqhjJXhk9RSgA7ZwLIu5SE73CAK7T-iBwQm6-LqtTjvzyirpWsOZWEo7oC75q8ZYDVhsMndeJy6UNN8hSNKmVtAKkMf5bFom7kuClFsHNubnGd_i_O0vcNtpk6bYLv7oDnk1WeKgTK528dWZHrhMOWtfgwgTLaiav5yEWGuGlfNtPsPNr2uYFVZYUTDnP4LuYphU3Fg_NLEGt2SsedN_0iA"/>
+<!-- Cybernetic HUD Reticle Overlays -->
+<div class="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="border-t-2 border-l-2 border-error w-6 h-6"></div>
+<div class="px-1.5 py-0.5 bg-surface-container-lowest/90 border border-error text-secondary font-label-sm text-[10px]">
+                        SCANNING REGION [A3]
+                      </div>
+<div class="border-t-2 border-r-2 border-error w-6 h-6"></div>
+</div>
+<!-- Centered Pathology Bounding Box -->
+<div class="mx-auto w-48 h-36 border-2 border-dashed border-error bg-error-container/20 rounded relative flex flex-col justify-between p-2">
+<div class="flex justify-between text-secondary font-label-sm text-[9px] font-bold">
+<span>LESION CLUSTER #01</span>
+<span>0.948 CONF</span>
+</div>
+<div class="text-center font-telemetry-value text-[11px] text-secondary bg-surface-container-lowest/80 py-0.5 rounded">
+                        Alternaria solani
+                      </div>
+</div>
+<div class="flex justify-between items-end">
+<div class="border-b-2 border-l-2 border-error w-6 h-6"></div>
+<div class="text-label-sm text-[10px] text-outline font-telemetry-value">LATENCY 142ms // FOV 82°</div>
+<div class="border-b-2 border-r-2 border-error w-6 h-6"></div>
+</div>
+</div>
+</div>
+<!-- Input Trigger Bar -->
+<div class="flex items-center gap-2">
+<button class="flex-1 py-2 px-space-sm rounded bg-surface-container-high hover:bg-surface-variant border border-outline-variant text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="file_upload">file_upload</span>
+                    Choose Image
+                  </button>
+<button class="flex-1 py-2 px-space-sm rounded bg-surface-container-high hover:bg-surface-variant border border-outline-variant text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="photo_camera">photo_camera</span>
+                    Scan Camera
+                  </button>
+<button class="flex-1 py-2 px-space-sm rounded bg-primary-container text-on-primary-container font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 shadow-[0_0_12px_rgba(16,185,129,0.3)] hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="play_arrow">play_arrow</span>
+                    Run Inference
+                  </button>
+</div>
+</div>
+<!-- Right: Detailed Pathology Diagnosis Card (5 cols) -->
+<div class="md:col-span-5 flex flex-col justify-between bg-surface-container-lowest p-space-md rounded-lg border border-outline-variant">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Diagnosis Output</span>
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error font-label-sm text-[10px] font-bold">CRITICAL ALERT</span>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-secondary">Early Blight</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant italic">Alternaria solani fungal pathogen</p>
+</div>
+<!-- Confidence Meter -->
+<div class="space-y-1">
+<div class="flex justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Inference Confidence</span>
+<span class="text-secondary font-telemetry-value font-bold text-[13px]">94.8%</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full w-[94.8%] shadow-[0_0_8px_rgba(239,68,68,0.6)]"></div>
+</div>
+</div>
+<!-- Pathology Severity & Action Prompts -->
+<div class="p-space-sm rounded bg-surface-container border border-outline-variant text-label-sm font-label-sm space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="text-outline">Severity Level:</span>
+<span class="text-secondary font-bold">Moderate (Stage 2)</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-outline">Foliar Impact:</span>
+<span class="text-on-surface">18.4% Surface Area</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-outline">Quarantine:</span>
+<span class="text-secondary font-bold">Isolate Bed 03 Recommended</span>
+</div>
+</div>
+<div class="space-y-1 text-label-sm font-label-sm">
+<div class="text-primary flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[16px]" data-icon="healing">healing</span> Recommended Treatment
+                    </div>
+<p class="text-body-sm text-on-surface-variant text-[12px] leading-tight">
+                      Deploy copper octanoate bio-fungicide mist at 120ml/m². Lower ambient canopy humidity below 65% RH.
+                    </p>
+</div>
+</div>
+<div class="pt-space-sm border-t border-outline-variant flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span>Model: PlantEdge-S3-V2</span>
+<span class="text-primary">Accuracy: 98.4% mAP</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Carousel / Recent Inferences Mini-Strip -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant" id="history-log">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Recent Crop Inferences (Buffer: 24h)</span>
+<span class="text-label-sm font-label-sm text-primary cursor-pointer hover:underline">View All 142 Captures</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<div class="p-2 rounded bg-surface-container border border-outline-variant flex items-center gap-2">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-error flex items-center justify-center text-secondary text-label-sm font-bold">EB</div>
+<div class="overflow-hidden text-label-sm font-label-sm">
+<div class="text-on-surface font-semibold truncate">Early Blight</div>
+<div class="text-secondary text-[10px]">94.8% · 2m ago</div>
+</div>
+</div>
+<div class="p-2 rounded bg-surface-container border border-outline-variant flex items-center gap-2">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-primary flex items-center justify-center text-primary text-label-sm font-bold">HF</div>
+<div class="overflow-hidden text-label-sm font-label-sm">
+<div class="text-on-surface font-semibold truncate">Healthy Flora</div>
+<div class="text-primary text-[10px]">99.1% · 18m ago</div>
+</div>
+</div>
+<div class="p-2 rounded bg-surface-container border border-outline-variant flex items-center gap-2">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-primary flex items-center justify-center text-primary text-label-sm font-bold">HF</div>
+<div class="overflow-hidden text-label-sm font-label-sm">
+<div class="text-on-surface font-semibold truncate">Healthy Flora</div>
+<div class="text-primary text-[10px]">97.4% · 44m ago</div>
+</div>
+</div>
+<div class="p-2 rounded bg-surface-container border border-outline-variant flex items-center gap-2">
+<div class="w-8 h-8 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-on-surface-variant text-label-sm font-bold">SL</div>
+<div class="overflow-hidden text-label-sm font-label-sm">
+<div class="text-on-surface font-semibold truncate">Septoria Spot</div>
+<div class="text-outline text-[10px]">11.3% · 1h ago</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 6-Axis Disease Confidence Spider / Radar Chart (4 Cols) -->
+<div class="lg:col-span-4 p-space-lg rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Pathology Vector</h3>
+<p class="text-label-sm font-label-sm text-outline">6-Axis Softmax Risk Radar</p>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container border border-outline-variant text-label-sm font-label-sm text-primary">
+                RADIAL V2
+              </span>
+</div>
+<!-- SVG Radar Graphic -->
+<div class="relative w-full aspect-square max-w-[340px] mx-auto my-2 flex items-center justify-center">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 300 300">
+<!-- Concentric Hexagon Grid Levels (20%, 40%, 60%, 80%, 100%) -->
+<!-- Center: (150, 150), Radius increments: 24, 48, 72, 96, 120 -->
+<polygon fill="none" opacity="0.4" points="150,30 253.9,90 253.9,210 150,270 46.1,210 46.1,90" stroke="#3c4a42" stroke-dasharray="3 3" stroke-width="1"></polygon>
+<polygon fill="none" opacity="0.5" points="150,54 233.1,102 233.1,198 150,246 66.9,198 66.9,102" stroke="#3c4a42" stroke-dasharray="2 2" stroke-width="1"></polygon>
+<polygon fill="none" opacity="0.6" points="150,78 212.3,114 212.3,186 150,222 87.7,186 87.7,114" stroke="#3c4a42" stroke-width="1"></polygon>
+<polygon fill="none" opacity="0.7" points="150,102 191.6,126 191.6,174 150,198 108.4,174 108.4,126" stroke="#3c4a42" stroke-width="1"></polygon>
+<polygon fill="none" opacity="0.8" points="150,126 170.8,138 170.8,162 150,174 129.2,162 129.2,138" stroke="#3c4a42" stroke-width="1"></polygon>
+<!-- Radial Axes -->
+<line stroke="#3c4a42" stroke-width="1" x1="150" x2="150" y1="150" y2="30"></line>
+<line stroke="#3c4a42" stroke-width="1" x1="150" x2="253.9" y1="150" y2="90"></line>
+<line stroke="#3c4a42" stroke-width="1" x1="150" x2="253.9" y1="150" y2="210"></line>
+<line stroke="#3c4a42" stroke-width="1" x1="150" x2="150" y1="150" y2="270"></line>
+<line stroke="#3c4a42" stroke-width="1" x1="150" x2="46.1" y1="150" y2="210"></line>
+<line stroke="#3c4a42" stroke-width="1" x1="150" x2="46.1" y1="150" y2="90"></line>
+<!-- Data Polygon:
+                    Axis 0 (Early Blight, Top): 94.8% -> r = 113.76 -> (150, 36.2)
+                    Axis 1 (Late Blight, 30°): 18.2% -> r = 21.84 -> (168.9, 139.1)
+                    Axis 2 (Septoria, 150°): 8.5% -> r = 10.2 -> (158.8, 155.1)
+                    Axis 3 (Bacterial Spot, 270°): 4.1% -> r = 4.92 -> (150, 154.9)
+                    Axis 4 (Leaf Mold, 210°): 12.0% -> r = 14.4 -> (137.5, 157.2)
+                    Axis 5 (Healthy Flora, 330°): 2.4% -> r = 2.88 -> (147.5, 148.6)
+                -->
+<polygon fill="rgba(239, 68, 68, 0.25)" filter="drop-shadow(0 0 6px rgba(239, 68, 68, 0.5))" points="150,36.2 168.9,139.1 158.8,155.1 150,154.9 137.5,157.2 147.5,148.6" stroke="#ef4444" stroke-width="2"></polygon>
+<!-- Vertex Points -->
+<circle class="animate-pulse" cx="150" cy="36.2" fill="#ef4444" r="4.5"></circle>
+<circle cx="168.9" cy="139.1" fill="#ef4444" r="3"></circle>
+<circle cx="158.8" cy="155.1" fill="#86948a" r="3"></circle>
+<circle cx="150" cy="154.9" fill="#86948a" r="3"></circle>
+<circle cx="137.5" cy="157.2" fill="#86948a" r="3"></circle>
+<circle cx="147.5" cy="148.6" fill="#4edea3" r="3"></circle>
+<!-- Axis Labels -->
+<text class="font-telemetry-display text-[10px] font-bold" fill="#ef4444" text-anchor="middle" x="150" y="18">Early Blight 94.8%</text>
+<text class="font-telemetry-display text-[9px]" fill="#86948a" text-anchor="start" x="264" y="90">Late Blight 18.2%</text>
+<text class="font-telemetry-display text-[9px]" fill="#86948a" text-anchor="start" x="264" y="215">Septoria 8.5%</text>
+<text class="font-telemetry-display text-[9px]" fill="#86948a" text-anchor="middle" x="150" y="288">Bacterial Spot 4.1%</text>
+<text class="font-telemetry-display text-[9px]" fill="#86948a" text-anchor="end" x="36" y="215">Leaf Mold 12.0%</text>
+<text class="font-telemetry-display text-[9px]" fill="#4edea3" text-anchor="end" x="36" y="90">Healthy Flora 2.4%</text>
+</svg>
+</div>
+<!-- Legend Grid -->
+<div class="grid grid-cols-2 gap-2 pt-2 border-t border-outline-variant text-label-sm font-label-sm">
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span>Critical Risk: Early Blight</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+<span>Sub-threshold (&lt; 20%)</span>
+</div>
+<div class="flex items-center gap-1.5 text-primary">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span>Flora Vitality Baseline</span>
+</div>
+<div class="flex items-center gap-1.5 text-outline">
+<span class="w-2.5 h-2.5 rounded-full bg-surface-variant"></span>
+<span>Norm Tolerance 5.0%</span>
+</div>
+</div>
+</div>
+<div class="mt-4 p-space-sm rounded bg-surface-container border border-outline-variant flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Model Confidence Entropy:</span>
+<span class="text-primary font-telemetry-value text-[12px]">H = 0.28 (Low Dispersion)</span>
+</div>
+</div>
+</section>
+<!-- SECTION: SOIL MOISTURE TELEMETRY & 24-HOUR HYDRATION TIME-SERIES -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg" id="soil-telemetry">
+<!-- Left: Soil Moisture 24H SVG Area Chart (8 Cols) -->
+<div class="lg:col-span-8 p-space-lg rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant flex flex-col justify-between">
+<div>
+<div class="flex flex-wrap items-center justify-between pb-space-sm border-b border-outline-variant gap-2">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="water_drop">water_drop</span>
+                  Soil Moisture Telemetry &amp; Irrigation Thresholds
+                </h3>
+<p class="text-label-sm font-label-sm text-outline">Continuous Capacitive Probe Stream [ADC1_CH4 Calibration v2.0]</p>
+</div>
+<!-- Time Filters -->
+<div class="flex items-center gap-1 p-1 rounded bg-surface-container border border-outline-variant">
+<button class="px-2.5 py-0.5 rounded text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface transition-colors">1H</button>
+<button class="px-2.5 py-0.5 rounded text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface transition-colors">6H</button>
+<button class="px-2.5 py-0.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold shadow-[0_0_8px_rgba(16,185,129,0.3)]">24H</button>
+<button class="px-2.5 py-0.5 rounded text-label-sm font-label-sm text-on-surface-variant hover:text-on-surface transition-colors">7D</button>
+</div>
+</div>
+<!-- Chart Visualization Area -->
+<div class="relative w-full h-72 my-4">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 800 280">
+<defs>
+<lineargradient id="moistureGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#4edea3" stop-opacity="0.35"></stop>
+<stop offset="60%" stop-color="#4edea3" stop-opacity="0.08"></stop>
+<stop offset="100%" stop-color="#4edea3" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Gridlines: Y-ticks for 100%, 75%, 50%, 25%, 0% -->
+<!-- Height is 240px usable, Y = 20 (100%), 80 (75%), 140 (50%), 200 (25%), 260 (0%) -->
+<line opacity="0.3" stroke="#3c4a42" stroke-width="0.5" x1="40" x2="790" y1="20" y2="20"></line>
+<line opacity="0.3" stroke="#3c4a42" stroke-width="0.5" x1="40" x2="790" y1="80" y2="80"></line>
+<line opacity="0.3" stroke="#3c4a42" stroke-width="0.5" x1="40" x2="790" y1="140" y2="140"></line>
+<line opacity="0.3" stroke="#3c4a42" stroke-width="0.5" x1="40" x2="790" y1="200" y2="200"></line>
+<line opacity="0.5" stroke="#3c4a42" stroke-width="1" x1="40" x2="790" y1="260" y2="260"></line>
+<!-- Y-Axis labels -->
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="end" x="32" y="24">100%</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="end" x="32" y="84">75%</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="end" x="32" y="144">50%</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="end" x="32" y="204">25%</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="end" x="32" y="264">0%</text>
+<!-- THRESHOLD REFERENCE LINE 1: 35% Irrigation Cutoff (emerald green dashed) -->
+<!-- 35% corresponds to Y = 260 - (2.4 * 35) = 176 -->
+<line opacity="0.8" stroke="#4edea3" stroke-dasharray="4 4" stroke-width="1.5" x1="40" x2="790" y1="176" y2="176"></line>
+<text class="font-telemetry-display text-[10px] font-bold" fill="#4edea3" text-anchor="end" x="785" y="172">
+                  35% Irrigation Cutoff Line
+                </text>
+<!-- THRESHOLD REFERENCE LINE 2: 30% Critical Dry Warning (crimson red dashed) -->
+<!-- 30% corresponds to Y = 260 - (2.4 * 30) = 188 -->
+<line opacity="0.9" stroke="#ef4444" stroke-dasharray="4 4" stroke-width="1.5" x1="40" x2="790" y1="188" y2="188"></line>
+<text class="font-telemetry-display text-[10px] font-bold" fill="#ef4444" text-anchor="end" x="785" y="202">
+                  30% Dry Threshold Alert
+                </text>
+<!-- Telemetry Moisture Curve Area & Line -->
+<!-- 24-hour hydration progression: starting around 68%, slight dip, pump pulse at 08:14 AM recovery to 74%, currently at 64.2% -->
+<path d="M 40 102 
+                     L 110 115 
+                     L 180 138 
+                     L 250 162 
+                     L 320 186 
+                     L 330 140 
+                     L 360 88 
+                     L 430 96 
+                     L 500 108 
+                     L 570 112 
+                     L 640 118 
+                     L 710 110 
+                     L 790 106 
+                     L 790 260 
+                     L 40 260 Z" fill="url(#moistureGradient)"></path>
+<path d="M 40 102 
+                     L 110 115 
+                     L 180 138 
+                     L 250 162 
+                     L 320 186 
+                     L 330 140 
+                     L 360 88 
+                     L 430 96 
+                     L 500 108 
+                     L 570 112 
+                     L 640 118 
+                     L 710 110 
+                     L 790 106" fill="none" stroke="#4edea3" stroke-width="2.5"></path>
+<!-- Water Pump Pulse Event Annotation Marker -->
+<circle cx="320" cy="186" fill="#ef4444" r="4"></circle>
+<circle cx="330" cy="140" fill="#4edea3" r="5" stroke="#0c0f11" stroke-width="2"></circle>
+<line stroke="#4edea3" stroke-dasharray="2 2" stroke-width="1" x1="330" x2="330" y1="140" y2="70"></line>
+<rect fill="#1d2022" height="20" rx="3" stroke="#4edea3" stroke-width="0.75" width="80" x="290" y="50"></rect>
+<text class="font-telemetry-display text-[9px] font-bold" fill="#4edea3" text-anchor="middle" x="330" y="64">
+                  +250mL ACTUATION
+                </text>
+<!-- Current Live Coordinate Pin -->
+<circle class="animate-ping" cx="790" cy="106" fill="#4edea3" r="5"></circle>
+<circle cx="790" cy="106" fill="#4edea3" r="4"></circle>
+<!-- Time X-Axis Ticks -->
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="start" x="40" y="275">00:00</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="middle" x="180" y="275">04:00</text>
+<text class="font-telemetry-display text-[10px] font-bold" fill="#4edea3" text-anchor="middle" x="330" y="275">08:14 [PUMP]</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="middle" x="500" y="275">12:00</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="middle" x="640" y="275">16:00</text>
+<text class="font-telemetry-display text-[10px]" fill="#86948a" text-anchor="end" x="790" y="275">NOW (64.2%)</text>
+</svg>
+</div>
+</div>
+<!-- Bottom Telemetry Annotation Strip -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-space-sm border-t border-outline-variant text-label-sm font-label-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-on-surface-variant">Optimal Window: 50% - 70%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-secondary">Desiccation Risk Trigger: &lt; 30%</span>
+</div>
+<div class="flex items-center gap-2 justify-end">
+<span class="text-outline">Packet Loss: 0.00%</span>
+<span class="text-primary font-telemetry-value text-[11px]">CRC VALID</span>
+</div>
+</div>
+</div>
+<!-- Right: Automatic Watering System Actuation Panel (4 Cols) -->
+<div class="lg:col-span-4 p-space-lg rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant flex flex-col justify-between">
+<div class="space-y-space-md">
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Auto-Watering Actuator</h3>
+<p class="text-label-sm font-label-sm text-outline">12V DC Submersible Pump Logic</p>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 border border-primary/40 text-primary font-label-sm text-[10px] font-bold">
+                STANDBY
+              </span>
+</div>
+<!-- Flow & Cycle Metrics -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant">
+<div class="text-label-sm font-label-sm text-outline">PUMP DISCHARGE</div>
+<div class="text-telemetry-value font-telemetry-value text-on-surface mt-1">0.0 <span class="text-body-sm text-outline">L/min</span></div>
+<div class="text-label-sm text-[10px] text-outline mt-0.5">Peak: 1.8 L/min</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest border border-outline-variant">
+<div class="text-label-sm font-label-sm text-outline">DAILY DISPENSED</div>
+<div class="text-telemetry-value font-telemetry-value text-primary mt-1">450 <span class="text-body-sm text-outline">mL</span></div>
+<div class="text-label-sm text-[10px] text-outline mt-0.5">2 pulses active</div>
+</div>
+</div>
+<!-- Actuation Automation Config -->
+<div class="p-space-sm rounded-lg bg-surface-container border border-outline-variant space-y-2 text-label-sm font-label-sm">
+<div class="flex items-center justify-between">
+<span class="text-on-surface">Auto-Irrigation Algorithm:</span>
+<span class="text-primary font-bold">ACTIVE [CLOSED-LOOP]</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-outline">Dry Actuation Trigger:</span>
+<span class="text-on-surface font-telemetry-value text-[11px]">&lt; 28.0% Soil Hydr.</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-outline">Pulse Duration Limit:</span>
+<span class="text-on-surface font-telemetry-value text-[11px]">45s Max (Flood Safe)</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-outline">Next Auto Check:</span>
+<span class="text-primary font-telemetry-value text-[11px]">in 12m 40s</span>
+</div>
+</div>
+<!-- Sound Alert / Buzzer Override Controls -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="volume_up">volume_up</span>
+<div>
+<div class="text-label-md font-label-md text-on-surface">Buzzer Warning Alert</div>
+<div class="text-label-sm text-[10px] text-outline">Piezo buzzer on desiccation hazard</div>
+</div>
+</div>
+<button class="px-space-sm py-1 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold shadow-[0_0_8px_rgba(16,185,129,0.3)]">
+                ARMED
+              </button>
+</div>
+<!-- Recent Actuator Timeline -->
+<div class="space-y-1.5">
+<div class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Actuator Event Journal</div>
+<div class="space-y-1 text-label-sm font-label-sm">
+<div class="flex items-center justify-between p-1.5 rounded bg-surface-container border border-outline-variant">
+<span class="text-on-surface-variant">08:14:22 AM</span>
+<span class="text-primary">250mL dispensed (45s pulse)</span>
+<span class="text-outline">AUTO</span>
+</div>
+<div class="flex items-center justify-between p-1.5 rounded bg-surface-container border border-outline-variant">
+<span class="text-on-surface-variant">02:30:10 AM</span>
+<span class="text-on-surface">200mL dispensed (38s pulse)</span>
+<span class="text-outline">AUTO</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Emergency Override Button -->
+<div class="pt-space-md border-t border-outline-variant flex gap-2">
+<button class="flex-1 py-2 px-space-sm rounded bg-surface-container-high hover:bg-surface-variant border border-outline-variant text-primary font-label-md text-label-md font-bold transition-colors">
+              MANUAL DOSING
+            </button>
+<button class="py-2 px-space-md rounded bg-secondary-container/20 hover:bg-secondary-container/40 border border-error text-secondary font-label-md text-label-md font-bold transition-colors">
+              SHUTOFF
+            </button>
+</div>
+</div>
+</section>
+<!-- SYSTEM BUS & CALIBRATION HARDWARE STATUS STRIP -->
+<section class="p-space-md rounded-xl bg-surface-container-low/90 backdrop-blur-md border border-outline-variant">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest border border-primary/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]" data-icon="developer_board">developer_board</span>
+</div>
+<div>
+<div class="text-body-md font-semibold text-on-surface">ESP32-S3 AIoT Micro-Controller Telemetry Bus</div>
+<div class="text-label-sm font-label-sm text-outline flex items-center gap-3">
+<span>Free RTOS Heap: <span class="text-primary">284 KB</span></span>
+<span>CPU Temp: <span class="text-on-surface font-telemetry-value text-[11px]">41.2°C</span></span>
+<span>Flash Integrity: <span class="text-primary font-telemetry-value text-[11px]">OK (SHA256)</span></span>
+<span>Power Source: <span class="text-on-surface font-telemetry-value text-[11px]">5.0V USB-C / 3.3V Stepdown</span></span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-space-sm py-1 rounded bg-surface-container-high border border-outline-variant text-label-sm font-label-sm text-on-surface-variant">
+              MQTT Broker: iot.floratech.internal [1883]
+            </span>
+<button class="px-space-md py-1.5 rounded bg-primary-container text-on-primary-container font-label-sm text-label-sm font-bold shadow-[0_0_10px_rgba(16,185,129,0.3)] hover:brightness-110 transition-all">
+              CALIBRATE ZERO
+            </button>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER TELEMETRY HUD STRIP -->
+<footer class="mt-auto px-space-lg py-space-md border-t border-outline-variant bg-surface-container-lowest flex flex-wrap items-center justify-between text-label-sm font-label-sm text-outline gap-2">
+<div class="flex items-center gap-3">
+<span class="flex items-center gap-1.5 text-primary">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+          FLORATECH BIOSENSING NETWORK ONLINE
+        </span>
+<span>|</span>
+<span>NODE ID: ESP32-S3_GH01_BED03</span>
+<span>|</span>
+<span>FIRMWARE: v4.2.8_RELEASE_OTA</span>
+</div>
+<div class="flex items-center gap-4">
+<span>SECURITY: TLS 1.3 MESH ENCRYPTED</span>
+<span>UTC CLOCK: <span class="text-on-surface font-telemetry-value">2025-05-18 14:38:22Z</span></span>
+</div>
+</footer>
+</div>
+</body></html>

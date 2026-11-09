@@ -1,0 +1,26 @@
+# Python bytecode and build artifacts
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Environment variables & local secrets (never commit secrets)
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Hugging Face cache
+.cache/
+huggingface/
+
+# Operating System artifacts
+.DS_Store
+Thumbs.db

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIoT Plant Health Monitoring System - Particle Typography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0c0f11;
+      --surface-color: #111416;
+      --surface-border: #1d2022;
+      --primary-color: #4edea3;
+      --secondary-color: #ff5252;
+      --accent-blue: #4cd7f6;
+      --text-main: #f0f3f5;
+      --text-muted: #86948a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Header Banner Container */
+    .banner-wrapper {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(135deg, rgba(17, 20, 22, 0.95), rgba(12, 15, 17, 0.98));
+      border: 1px solid rgba(78, 222, 163, 0.18);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+    }
+
+    /* Ambient background grid */
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(78, 222, 163, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(76, 215, 246, 0.05) 0%, transparent 40%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Canvas */
+    #particleCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+
+    /* Telemetry HUD top tags */
+    .hud-meta {
+      position: absolute;
+      top: 14px;
+      left: 40px;
+      right: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      background: rgba(78, 222, 163, 0.1);
+      border: 1px solid rgba(78, 222, 163, 0.25);
+      color: var(--primary-color);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--primary-color);
+      box-shadow: 0 0 8px var(--primary-color);
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    /* Sub-bar metrics */
+    .hud-footer {
+      position: absolute;
+      bottom: 12px;
+      left: 40px;
+      right: 40px;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(134, 148, 138, 0.7);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Controls Panel */
+    .controls-panel {
+      background: var(--surface-color);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 18px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .control-label {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 110px;
+      height: 4px;
+      border-radius: 2px;
+      background: #272a2d;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      box-shadow: 0 0 6px rgba(78, 222, 163, 0.6);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn {
+      background: rgba(78, 222, 163, 0.12);
+      border: 1px solid rgba(78, 222, 163, 0.3);
+      color: var(--primary-color);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: rgba(78, 222, 163, 0.22);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 10px rgba(78, 222, 163, 0.25);
+    }
+
+    /* Integration snippet box */
+    .code-box {
+      background: #090b0d;
+      border: 1px solid #1f2327;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #9cdcfe;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .code-header {
+      font-size: 11px;
+      color: #6a737d;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Particle Typography Banner -->
+    <div class="banner-wrapper" id="bannerContainer">
+      <div class="grid-overlay"></div>
+      
+      <!-- Top Status HUD -->
+      <div class="hud-meta">
+        <span class="badge"><span class="badge-dot"></span>SYS.ID 4657785732474624898 // ONLINE</span>
+        <span>TELEMETRY PROTOCOL v2.4</span>
+      </div>
+
+      <!-- Animated Canvas -->
+      <canvas id="particleCanvas"></canvas>
+
+      <!-- Bottom telemetry stats -->
+      <div class="hud-footer">
+        <span id="particleCountLabel">PARTICLES: 280 ACTIVE</span>
+        <span id="fpsLabel">RENDER: 60 FPS</span>
+      </div>
+    </div>
+
+    <!-- Interactive Tuning & Controls -->
+    <div class="controls-panel">
+      <div class="control-group">
+        <span class="control-label">Density</span>
+        <input type="range" min="100" max="600" value="280" class="slider" id="densitySlider">
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">Flow Drift</span>
+        <input type="range" min="5" max="35" value="18" class="slider" id="speedSlider">
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">Glow</span>
+        <input type="range" min="2" max="15" value="8" class="slider" id="glowSlider">
+      </div>
+
+      <div class="control-group">
+        <button class="btn" id="disperseTriggerBtn">Disperse Wave</button>
+        <button class="btn" id="resetBtn">Re-Assemble</button>
+      </div>
+    </div>
+
+    <!-- Integration Code Reference -->
+    <div class="code-box">
+      <div class="code-header">
+        <span>Streamlit / Web Integration Snippet</span>
+        <span>st.components.v1.html</span>
+      </div>
+      <code>
+# Embed directly into Streamlit header:<br>
+import streamlit as st<br>
+import streamlit.components.v1 as components<br><br>
+with open("stitch-export/animations/particle_typography.html", "r", encoding="utf-8") as f:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;components.html(f.read(), height=170, scrolling=False)
+      </code>
+    </div>
+
+  </div>
+
+  <script>
+    (function() {
+      const canvas = document.getElementById('particleCanvas');
+      const ctx = canvas.getContext('2d');
+      const container = document.getElementById('bannerContainer');
+      const densitySlider = document.getElementById('densitySlider');
+      const speedSlider = document.getElementById('speedSlider');
+      const glowSlider = document.getElementById('glowSlider');
+      const disperseBtn = document.getElementById('disperseTriggerBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const particleCountLabel = document.getElementById('particleCountLabel');
+      const fpsLabel = document.getElementById('fpsLabel');
+
+      const TITLE_TEXT = "AIoT Plant Health Monitoring System";
+      
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+
+      let particles = [];
+      let textSamplePoints = [];
+      let targetCount = parseInt(densitySlider.value, 10);
+      let flowSpeed = parseInt(speedSlider.value, 10) / 10;
+      let glowStrength = parseInt(glowSlider.value, 10);
+
+      // Mouse interactive position
+      const mouse = { x: -9999, y: -9999, radius: 100, isHovering: false };
+
+      // Performance monitoring
+      let lastFrameTime = performance.now();
+      let frameCount = 0;
+      let lastFpsUpdate = performance.now();
+
+      // Palettes for particle accents
+      const COLORS = {
+        white: 'rgba(255, 255, 255, 0.95)',
+        whiteDim: 'rgba(235, 245, 240, 0.55)',
+        greenHighlight: 'rgba(78, 222, 163, 0.9)',
+        greenGlow: 'rgba(16, 185, 129, 0.75)',
+        redHighlight: 'rgba(255, 82, 82, 0.9)',
+        redGlow: 'rgba(239, 68, 68, 0.75)',
+        cyanHighlight: 'rgba(76, 215, 246, 0.85)'
+      };
+
+      function resize() {
+        const rect = container.getBoundingClientRect();
+        dpr = window.devicePixelRatio || 1;
+        width = rect.width;
+        height = rect.height;
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.scale(dpr, dpr);
+
+        sampleTextMask();
+        initParticles();
+      }
+
+      // Sample raster pixel positions of the text to guide disintegration & anchor particles
+      function sampleTextMask() {
+        textSamplePoints = [];
+
+        const offCanvas = document.createElement('canvas');
+        const offCtx = offCanvas.getContext('2d');
+        offCanvas.width = width;
+        offCanvas.height = height;
+
+        // Determine responsive font size
+        let fontSize = Math.min(Math.max(width * 0.038, 20), 38);
+        offCtx.font = `700 ${fontSize}px 'Space Grotesk', -apple-system, sans-serif`;
+        offCtx.fillStyle = '#ffffff';
+        offCtx.textBaseline = 'middle';
+
+        // Horizontal positioning: align with generous left margin for particle cloud formation
+        const textX = Math.max(width * 0.08, 48);
+        const textY = height / 2 + 10;
+
+        offCtx.fillText(TITLE_TEXT, textX, textY);
+
+        // Scan the first 35% of the width (covering "AIoT Plant" and disintegrating boundary)
+        const scanWidth = Math.min(width * 0.45, 420);
+        const imgData = offCtx.getImageData(0, 0, scanWidth, height);
+        const data = imgData.data;
+
+        // Sample points with step size for performance
+        const step = 4;
+        for (let y = 0; y < height; y += step) {
+          for (let x = 0; x < scanWidth; x += step) {
+            const index = (y * scanWidth + x) * 4;
+            if (data[index + 3] > 140) {
+              textSamplePoints.push({ x, y, originX: x, originY: y });
+            }
+          }
+        }
+      }
+
+      class Particle {
+        constructor() {
+          this.reset(true);
+        }
+
+        reset(initial = false) {
+          // Particles originate primarily from the left cloud and the initial text contours
+          const spawnFromText = Math.random() < 0.65 && textSamplePoints.length > 0;
+
+          if (spawnFromText) {
+            const pt = textSamplePoints[Math.floor(Math.random() * textSamplePoints.length)];
+            this.x = pt.x + (Math.random() - 0.5) * 6;
+            this.y = pt.y + (Math.random() - 0.5) * 6;
+            this.originX = pt.x;
+            this.originY = pt.y;
+          } else {
+            // Ethereal cloud forming to the left and drifting in
+            this.x = Math.random() * (width * 0.22);
+            this.y = (height / 2) + (Math.random() - 0.5) * (height * 0.65);
+            this.originX = this.x;
+            this.originY = this.y;
+          }
+
+          if (initial) {
+            this.x += (Math.random() - 0.5) * (width * 0.35);
+          }
+
+          // Smooth left-to-right drift velocity
+          this.vx = (Math.random() * 0.9 + 0.4) * flowSpeed;
+          this.vy = (Math.random() - 0.5) * 0.45;
+          this.baseVx = this.vx;
+
+          // Particle dimension
+          this.size = Math.random() < 0.82 ? Math.random() * 1.6 + 0.8 : Math.random() * 2.8 + 1.8;
+
+          // Color type determination (subtle white with red and green accents)
+          const roll = Math.random();
+          if (roll < 0.62) {
+            this.type = 'white';
+            this.color = COLORS.white;
+            this.glowColor = 'rgba(255, 255, 255, 0.8)';
+          } else if (roll < 0.82) {
+            this.type = 'green';
+            this.color = COLORS.greenHighlight;
+            this.glowColor = COLORS.greenGlow;
+          } else if (roll < 0.94) {
+            this.type = 'red';
+            this.color = COLORS.redHighlight;
+            this.glowColor = COLORS.redGlow;
+          } else {
+            this.type = 'cyan';
+            this.color = COLORS.cyanHighlight;
+            this.glowColor = COLORS.cyanHighlight;
+          }
+
+          this.alpha = Math.random() * 0.7 + 0.25;
+          this.maxLife = Math.floor(Math.random() * 180 + 120);
+          this.life = initial ? Math.floor(Math.random() * this.maxLife) : this.maxLife;
+
+          this.oscillationSpeed = Math.random() * 0.04 + 0.015;
+          this.oscillationOffset = Math.random() * Math.PI * 2;
+          this.disperseForce = 0;
+        }
+
+        update() {
+          this.life--;
+
+          if (this.life <= 0 || this.x > width + 40 || this.y < -20 || this.y > height + 20) {
+            this.reset();
+            return;
+          }
+
+          // Organic sinusoidal fluid drift
+          const wave = Math.sin(this.life * this.oscillationSpeed + this.oscillationOffset) * 0.45;
+          this.y += this.vy + wave;
+          this.x += this.vx;
+
+          // Mouse proximity reaction (gentle magnetic turbulence)
+          if (mouse.isHovering) {
+            const dx = this.x - mouse.x;
+            const dy = this.y - mouse.y;
+            const dist = Math.hypot(dx, dy);
+
+            if (dist < mouse.radius) {
+              const force = (1 - dist / mouse.radius) * 2.2;
+              this.x += (dx / dist) * force;
+              this.y += (dy / dist) * force;
+            }
+          }
+
+          // Fade in and out life-cycle
+          const lifeProgress = this.life / this.maxLife;
+          if (lifeProgress > 0.85) {
+            this.alpha = (1 - lifeProgress) / 0.15;
+          } else if (lifeProgress < 0.25) {
+            this.alpha = lifeProgress / 0.25;
+          }
+        }
+
+        draw(ctx) {
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, Math.min(1, this.alpha));
+          ctx.fillStyle = this.color;
+          ctx.shadowColor = this.glowColor;
+          ctx.shadowBlur = glowStrength;
+
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Core micro-sparkle for larger particles
+          if (this.size > 2.0) {
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.restore();
+        }
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < targetCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+
+      // Draw the crisp typography title
+      function drawTypography() {
+        ctx.save();
+        let fontSize = Math.min(Math.max(width * 0.038, 20), 38);
+        ctx.font = `700 ${fontSize}px 'Space Grotesk', -apple-system, sans-serif`;
+        ctx.textBaseline = 'middle';
+
+        const textX = Math.max(width * 0.08, 48);
+        const textY = height / 2 + 10;
+
+        // Subtle glowing backdrop shadow
+        ctx.shadowColor = 'rgba(78, 222, 163, 0.25)';
+        ctx.shadowBlur = 18;
+
+        // Gradient for text fill
+        const grad = ctx.createLinearGradient(textX, 0, textX + width * 0.7, 0);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.3, '#f2f8f5');
+        grad.addColorStop(0.7, '#d2e8dc');
+        grad.addColorStop(1, '#98af9f');
+
+        ctx.fillStyle = grad;
+        ctx.fillText(TITLE_TEXT, textX, textY);
+
+        // Highlight "AIoT" prefix with delicate emerald gradient tint
+        const prefix = "AIoT";
+        const prefixGrad = ctx.createLinearGradient(textX, 0, textX + 110, 0);
+        prefixGrad.addColorStop(0, '#4edea3');
+        prefixGrad.addColorStop(1, '#ffffff');
+        ctx.fillStyle = prefixGrad;
+        ctx.fillText(prefix, textX, textY);
+
+        ctx.restore();
+      }
+
+      // Main render loop
+      function animate(now) {
+        requestAnimationFrame(animate);
+
+        // Performance / FPS tracking
+        frameCount++;
+        if (now - lastFpsUpdate >= 500) {
+          const fps = Math.round((frameCount * 1000) / (now - lastFpsUpdate));
+          fpsLabel.textContent = `RENDER: ${fps} FPS`;
+          frameCount = 0;
+          lastFpsUpdate = now;
+        }
+
+        ctx.clearRect(0, 0, width, height);
+
+        // 1. Draw Typography
+        drawTypography();
+
+        // 2. Draw Disintegration Particle Field
+        ctx.save();
+        ctx.globalCompositeOperation = 'screen';
+
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw(ctx);
+        }
+
+        ctx.restore();
+      }
+
+      // Interactive mouse listeners
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+        mouse.isHovering = true;
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        mouse.isHovering = false;
+        mouse.x = -9999;
+        mouse.y = -9999;
+      });
+
+      // Controls event listeners
+      densitySlider.addEventListener('input', (e) => {
+        targetCount = parseInt(e.target.value, 10);
+        particleCountLabel.textContent = `PARTICLES: ${targetCount} ACTIVE`;
+        while (particles.length < targetCount) particles.push(new Particle());
+        if (particles.length > targetCount) particles.length = targetCount;
+      });
+
+      speedSlider.addEventListener('input', (e) => {
+        flowSpeed = parseInt(e.target.value, 10) / 10;
+        particles.forEach(p => p.vx = (Math.random() * 0.9 + 0.4) * flowSpeed);
+      });
+
+      glowSlider.addEventListener('input', (e) => {
+        glowStrength = parseInt(e.target.value, 10);
+      });
+
+      disperseBtn.addEventListener('click', () => {
+        particles.forEach(p => {
+          p.vx += (Math.random() + 1.2) * 2.8;
+          p.vy += (Math.random() - 0.5) * 3.5;
+        });
+      });
+
+      resetBtn.addEventListener('click', () => {
+        initParticles();
+      });
+
+      // Window resize handler
+      window.addEventListener('resize', resize);
+
+      // Initial startup
+      document.fonts.ready.then(() => {
+        resize();
+        requestAnimationFrame(animate);
+      });
+
+    })();
+  </script>
+</body>
+</html>
+
