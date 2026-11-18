@@ -17,7 +17,7 @@ MAX_FILE_SIZE_MB = 25       # Streamlit upload limit reference
 ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png"]
 
 # ESP32 IoT & Irrigation Configuration
-DEFAULT_ESP32_IP = "http://192.168.12.16"
+DEFAULT_ESP32_IP = "http://10.157.224.236"
 IOT_REQUEST_TIMEOUT = 2.5       # Seconds before network timeout
 IOT_DEFAULT_REFRESH_SEC = 5     # Default polling interval in seconds
 DRY_WARNING_THRESHOLD = 30.0    # Soil moisture % below which dry warning & sound trigger

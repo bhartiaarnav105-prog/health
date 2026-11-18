@@ -10,8 +10,8 @@ from app.iot_client import fetch_esp32_telemetry, normalize_base_url
 class TestESP32IoTClient(unittest.TestCase):
     def test_01_normalize_url(self):
         """Test URL normalization utility."""
-        self.assertEqual(normalize_base_url("192.168.12.16"), "http://192.168.12.16")
-        self.assertEqual(normalize_base_url("http://192.168.12.16/"), "http://192.168.12.16")
+        self.assertEqual(normalize_base_url("10.157.224.236"), "http://10.157.224.236")
+        self.assertEqual(normalize_base_url("http://10.157.224.236/"), "http://10.157.224.236")
         self.assertEqual(normalize_base_url("https://esp32.local/"), "https://esp32.local")
 
     @patch("requests.get")
@@ -39,14 +39,14 @@ class TestESP32IoTClient(unittest.TestCase):
         mock_status_resp.json.return_value = {
             "system_status": "ONLINE",
             "wifi_connected": True,
-            "ip_address": "192.168.12.16",
+            "ip_address": "10.157.224.236",
             "uptime_seconds": 360,
             "wifi_rssi": -62,
         }
 
         mock_get.side_effect = [mock_sensor_resp, mock_status_resp]
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         self.assertTrue(result["online"])
         self.assertEqual(result["moisture"], 32.5)
         self.assertEqual(result["raw_value"], 2480)
@@ -63,7 +63,7 @@ class TestESP32IoTClient(unittest.TestCase):
         """Test handling connection timeout when ESP32 is offline."""
         mock_get.side_effect = requests.exceptions.ConnectTimeout("Timed out connecting")
 
-        result = fetch_esp32_telemetry("http://192.168.12.16", timeout=1.0)
+        result = fetch_esp32_telemetry("http://10.157.224.236", timeout=1.0)
         self.assertFalse(result["online"])
         self.assertIsNone(result["moisture"])  # Must be None, NOT 0.0!
         self.assertIn("timed out", result["error_message"].lower())
@@ -73,7 +73,7 @@ class TestESP32IoTClient(unittest.TestCase):
         """Test handling connection refused / network error."""
         mock_get.side_effect = requests.exceptions.ConnectionError("Connection refused")
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         self.assertFalse(result["online"])
         self.assertIsNone(result["moisture"])
         self.assertIn("Failed to connect", result["error_message"])
@@ -103,7 +103,7 @@ class TestESP32IoTClient(unittest.TestCase):
 
         mock_get.side_effect = [mock_sensor_resp, mock_status_resp]
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         self.assertTrue(result["online"])
         self.assertEqual(result["soil_status"], "DRY")
         self.assertEqual(result["pump_status"], "ON")
@@ -136,7 +136,7 @@ class TestESP32IoTClient(unittest.TestCase):
 
         mock_get.side_effect = [mock_sensor_resp, mock_status_resp]
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         self.assertTrue(result["online"])
         self.assertEqual(result["current_state"], "COOLDOWN")
         self.assertEqual(result["pump_status"], "OFF")
@@ -168,7 +168,7 @@ class TestESP32IoTClient(unittest.TestCase):
 
         mock_get.side_effect = [mock_sensor_resp, mock_status_resp]
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         self.assertTrue(result["online"])
         self.assertEqual(result["current_state"], "LOCKOUT")
         self.assertEqual(result["pump_status"], "OFF")
@@ -202,7 +202,7 @@ class TestESP32IoTClient(unittest.TestCase):
 
         mock_get.side_effect = [mock_sensor_resp, mock_status_resp]
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         self.assertTrue(result["online"])
         self.assertFalse(result["sensor_valid"])
         self.assertEqual(result["pump_status"], "OFF")
@@ -233,7 +233,7 @@ class TestESP32IoTClient(unittest.TestCase):
             requests.exceptions.ConnectionError("Status endpoint unreachable"),
         ]
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         # /sensor succeeded so device is online
         self.assertTrue(result["online"])
         self.assertEqual(result["moisture"], 45.0)
@@ -252,7 +252,7 @@ class TestESP32IoTClient(unittest.TestCase):
 
         mock_get.return_value = mock_sensor_resp
 
-        result = fetch_esp32_telemetry("http://192.168.12.16")
+        result = fetch_esp32_telemetry("http://10.157.224.236")
         self.assertFalse(result["online"])
         self.assertIsNotNone(result["error_message"])
         self.assertIn("JSON", result["error_message"])

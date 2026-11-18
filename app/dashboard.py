@@ -601,7 +601,7 @@ with tab2:
             "ESP32 Device URL:",
             value=st.session_state.esp32_ip,
             key="tab2_esp32_url",
-            help="HTTP endpoint of your ESP32 on the local Wi-Fi network (e.g. http://192.168.12.16)",
+            help="HTTP endpoint of your ESP32 on the local Wi-Fi network (e.g. http://10.157.224.236)",
         )
     with ctrl_col2:
         poll_clicked = st.button("🔄 Poll ESP32 Now", type="primary", use_container_width=True)
@@ -668,7 +668,7 @@ with tab2:
                 "max_attempts": 3,
                 "uptime_seconds": 1200 + step_idx * 30,
                 "wifi_rssi": -58,
-                "ip_address": "192.168.12.16 (Simulated)",
+                "ip_address": "10.157.224.236 (Simulated)",
                 "error_message": None,
                 "is_demo": True,
             }

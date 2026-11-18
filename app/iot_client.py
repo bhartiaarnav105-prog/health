@@ -22,7 +22,7 @@ def fetch_esp32_telemetry(
     """Fetch live sensor telemetry and device status from ESP32 REST API.
     
     Args:
-        base_url: Base URL of ESP32 (e.g. 'http://192.168.12.16').
+        base_url: Base URL of ESP32 (e.g. 'http://10.157.224.236').
         timeout: Network request timeout in seconds.
         
     Returns:

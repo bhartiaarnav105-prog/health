@@ -28,8 +28,8 @@
 // =====================================================================================
 // 1. WI-FI CREDENTIALS & SERVER CONFIGURATION
 // =====================================================================================
-const char* WIFI_SSID     = "GUESTHOUSE";
-const char* WIFI_PASSWORD = "Guest#26";
+const char* WIFI_SSID     = "AndroidAP_5516";
+const char* WIFI_PASSWORD = "12345678";
 
 // Non-blocking Wi-Fi reconnect timer
 const unsigned long WIFI_RECONNECT_INTERVAL_MS = 15000; // Check every 15s if disconnected

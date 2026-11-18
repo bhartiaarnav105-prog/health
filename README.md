@@ -115,7 +115,7 @@ plant-monitor/ (c:\Users\bhart\OneDrive\Desktop\helath)
    ```
 3. Set **Tools $\rightarrow$ Board** to `ESP32 Dev Module` and select your COM port.
 4. Click **Upload** (`Ctrl + U`).
-5. Open Serial Monitor at **115200 baud** to see the assigned IP address (e.g. `http://192.168.12.16`).
+5. Open Serial Monitor at **115200 baud** to see the assigned IP address (e.g. `http://10.157.224.236`).
 
 ### 2. Launch the Streamlit Dashboard
 ```powershell
@@ -162,7 +162,7 @@ public Streamlit URL
 6. Click **Deploy!**
 
 ### ⚠️ Hardware Communication Notice (ESP32 in the Cloud)
-- **Private Network Limitation**: Streamlit Community Cloud operates from public cloud servers. Public cloud containers **cannot directly reach private local network IP addresses** (such as `http://192.168.12.16` or `10.x.x.x`) on your home or greenhouse Wi-Fi.
+- **Private Network Limitation**: Streamlit Community Cloud operates from public cloud servers. Public cloud containers **cannot directly reach private local network IP addresses** (such as `http://10.157.224.236` or `192.168.x.x`) on your home or greenhouse Wi-Fi.
 - **Using the Cloud Deployment**:
   - **🌿 Plant Disease AI (Tab 1)**: Fully functional in the cloud. Leaf photos can be uploaded and analyzed by the PyTorch model with full confidence metrics and CSV history export.
   - **💧 Soil Moisture & Irrigation (Tab 2)**: Switch to **🧪 DEMO MODE** in the sidebar to simulate live capacitive sensor readings, 30% desiccation hazard alerts, acoustic warnings, Altair threshold graphs, and actuator event logs.
